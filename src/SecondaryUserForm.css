@@ -1,0 +1,132 @@
+.secondary-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0c;
+  padding: 24px;
+}
+
+.secondary-glass {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+.secondary-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.secondary-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.secondary-sub {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+.secondary-sub strong {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.secondary-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.secondary-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.secondary-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.secondary-group label {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.secondary-group input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.secondary-group input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.secondary-group input:focus {
+  border-color: #6366f1;
+}
+
+.secondary-button {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 13px;
+  transition: opacity 0.2s;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.secondary-button:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.secondary-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.secondary-skip {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  font-size: 13px;
+  margin-top: 20px;
+  padding: 4px;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.secondary-skip:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
