@@ -1,0 +1,140 @@
+{
+  "info": {
+    "name": "Aires Inspect API",
+    "description": "API collection for AIRES Inspect pre-payment flow. \n\nBase URL: https://aires-inspect-test-alb-1760870877.ca-central-1.elb.amazonaws.com\n\nNote: Browser will show a cert warning on the test URL — in Postman disable SSL verification under Settings > General > SSL certificate verification OFF for testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://aires-inspect-test-alb-1760870877.ca-central-1.elb.amazonaws.com",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Confirms the backend server is running and reachable through the ALB.\n\nExpected response: 200 OK\n{\n  \"status\": \"ok\"\n}"
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"status\": \"ok\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Checkout Session",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"metadata\": {\n    \"companyName\": \"Test Company Inc\",\n    \"contactName\": \"John Smith\",\n    \"email\": \"john.smith@testcompany.com\",\n    \"phone\": \"416-555-0100\",\n    \"industry\": \"Financial Services\",\n    \"companySize\": \"50-200\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/checkout-session",
+          "host": ["{{base_url}}"],
+          "path": ["checkout-session"]
+        },
+        "description": "Creates a Stripe checkout session and returns a redirect URL.\n\nThe frontend redirects the user to the returned URL to complete payment on Stripe's hosted page.\n\nExpected response: 200 OK\n{\n  \"url\": \"https://checkout.stripe.com/c/pay/cs_test_...\"\n}\n\nOn error: 500\n{\n  \"error\": \"Failed to create checkout session. Please try again.\"\n}\n\nNote: Rate limited to 100 requests per 15 minutes per IP."
+      },
+      "response": [
+        {
+          "name": "200 OK — Checkout URL returned",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"url\": \"https://checkout.stripe.com/c/pay/cs_test_a1B2c3D4e5F6...\"\n}"
+        },
+        {
+          "name": "500 — Stripe error",
+          "status": "Internal Server Error",
+          "code": 500,
+          "body": "{\n  \"error\": \"Failed to create checkout session. Please try again.\"\n}"
+        },
+        {
+          "name": "429 — Rate limit exceeded",
+          "status": "Too Many Requests",
+          "code": 429,
+          "body": "Too many requests from this IP, please try again after 15 minutes"
+        }
+      ]
+    },
+    {
+      "name": "Create Checkout Session — Empty Metadata",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/checkout-session",
+          "host": ["{{base_url}}"],
+          "path": ["checkout-session"]
+        },
+        "description": "Tests that a checkout session can be created even with no metadata (edge case).\n\nExpected: 200 OK with a Stripe URL — no submission file saved on server."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Checkout Session — Invalid Body",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "not valid json",
+          "options": {
+            "raw": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/checkout-session",
+          "host": ["{{base_url}}"],
+          "path": ["checkout-session"]
+        },
+        "description": "Tests server handles malformed request body gracefully.\n\nExpected: 400 Bad Request — should NOT crash the server."
+      },
+      "response": []
+    }
+  ]
+}
